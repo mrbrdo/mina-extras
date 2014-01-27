@@ -1,8 +1,10 @@
 namespace :puma do
   task :config do
+    set :rails_env = Rail.env || 'production'
+    set :config_filename = "puma-#{rails_env}.rb"
     cmd_prefix  = "cd #{deploy_to}/#{current_path} ; "
     cmd_prefix += "RAILS_ENV=#{rails_env!} NEW_RELIC_DISPATCHER=puma bundle exec"
-    set :puma_start_cmd, "#{cmd_prefix} puma -C #{File.join(deploy_to,current_path,'config','puma.rb')}"
+    set :puma_start_cmd, "#{cmd_prefix} puma -C #{File.join(deploy_to,current_path,'config', config_filename)}"
     set :puma_stop_cmd, "#{cmd_prefix} pumactl -S #{deploy_to}/#{shared_path}/sockets/puma.state stop"
     set :puma_restart_cmd, "#{cmd_prefix} pumactl -S #{deploy_to}/#{shared_path}/sockets/puma.state phased-restart"
   end
