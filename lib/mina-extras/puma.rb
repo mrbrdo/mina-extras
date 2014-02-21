@@ -26,7 +26,11 @@ namespace :puma do
   desc 'Restart puma'
   task :restart => [:config, :environment] do
     queue %{
-      if [[ ! -e "#{deploy_to}/#{shared_path}/sockets/pumactl.sock" || ! -e "#{deploy_to}/#{shared_path}/sockets/puma.sock" ]]; then
+      PUMA_PID=$(cat "#{deploy_to}/#{shared_path}/pids/puma.pid")
+      kill -0 $PUMA_PID > /dev/null 2>&1
+      if [ $? != 0 ]; then
+        rm "#{deploy_to}/#{shared_path}/sockets/pumactl.sock" > /dev/null 2>&1
+        rm "#{deploy_to}/#{shared_path}/sockets/puma.sock" > /dev/null 2>&1
         echo "-----> Starting puma"
         #{echo_cmd puma_start_cmd}
       else
