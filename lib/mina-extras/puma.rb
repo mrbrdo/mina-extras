@@ -26,7 +26,7 @@ namespace :puma do
   desc 'Restart puma'
   task :restart => [:config, :environment] do
     queue %{
-      if [[ ! -e "#{deploy_to}/#{shared_path}/sockets/puma.state" || ! -e "#{deploy_to}/#{shared_path}/sockets/puma.sock" ]]; then
+      if [[ ! -e "#{deploy_to}/#{shared_path}/sockets/pumactl.sock" || ! -e "#{deploy_to}/#{shared_path}/sockets/puma.sock" ]]; then
         echo "-----> Starting puma"
         #{echo_cmd puma_start_cmd}
       else
