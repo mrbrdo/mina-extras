@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mina-extras (0.0.4)
+    mina-extras (0.0.5)
       mina
 
 GEM
