@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'mina-extras'
-  s.version     = '0.0.6'
+  s.version     = '0.0.7'
   s.date        = '2013-11-08'
   s.summary     = "extra mina deploy tasks"
   s.description = "Provides extra Mina deploy tasks for Puma, RVM, Faye."
