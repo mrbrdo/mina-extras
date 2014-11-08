@@ -1,17 +1,17 @@
 PATH
   remote: .
   specs:
-    mina-extras (0.0.6)
+    mina-extras (0.0.8)
       mina
 
 GEM
   remote: https://rubygems.org/
   specs:
-    mina (0.3.0)
-      open4
+    mina (0.3.1)
+      open4 (~> 1.3.4)
       rake
-    open4 (1.3.0)
-    rake (10.1.1)
+    open4 (1.3.4)
+    rake (10.3.2)
 
 PLATFORMS
   ruby
