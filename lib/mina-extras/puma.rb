@@ -1,15 +1,13 @@
-namespace :puma do
-  task :config do
-    set :puma_cmd_prefix, "cd #{deploy_to}/#{current_path} ; RAILS_ENV=#{rails_env!}"
-    set :puma_pid_path, "#{deploy_to}/#{shared_path}/pids/puma.pid"
-    set :puma_sock_dir, "#{deploy_to}/#{shared_path}/sockets"
-    set :puma_start_cmd, "bundle exec puma -C #{File.join(deploy_to,current_path,'config','puma.rb')}"
-    set :puma_stop_cmd, "bundle exec pumactl -S #{puma_sock_dir}/puma.state stop"
-    set :puma_restart_cmd, "bundle exec pumactl -S #{puma_sock_dir}/puma.state phased-restart"
-  end
+set_default :puma_cmd_prefix, lambda { "cd #{deploy_to}/#{current_path} ; RAILS_ENV=#{rails_env!}" }
+set_default :puma_pid_path, lambda { "#{deploy_to}/#{shared_path}/pids/puma.pid" }
+set_default :puma_sock_dir, lambda { "#{deploy_to}/#{shared_path}/sockets" }
+set_default :puma_start_cmd, lambda { "bundle exec puma -C #{File.join(deploy_to,current_path,'config','puma.rb')}" }
+set_default :puma_stop_cmd, lambda { "bundle exec pumactl -S #{puma_sock_dir}/puma.state stop" }
+set_default :puma_restart_cmd, lambda { "bundle exec pumactl -S #{puma_sock_dir}/puma.state phased-restart" }
 
+namespace :puma do
   desc 'Start puma'
-  task :start => [:config, :environment] do
+  task :start => [:environment] do
     queue %{
       echo "-----> Starting puma"
       #{echo_cmd "#{puma_cmd_prefix} #{puma_start_cmd}"}
@@ -17,7 +15,7 @@ namespace :puma do
   end
 
   desc 'Stop puma'
-  task :stop => [:config, :environment] do
+  task :stop => [:environment] do
     queue %{
       echo "-----> Stopping puma"
       #{echo_cmd "#{puma_cmd_prefix} #{puma_stop_cmd}"}
@@ -25,7 +23,7 @@ namespace :puma do
   end
 
   desc 'Restart puma'
-  task :restart => [:config, :environment] do
+  task :restart => [:environment] do
     queue %{
       PUMA_PID=$(cat "#{puma_pid_path}")
       kill -0 $PUMA_PID > /dev/null 2>&1
