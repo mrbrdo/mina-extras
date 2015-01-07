@@ -25,7 +25,7 @@ namespace :puma do
   desc 'Restart puma'
   task :restart => [:environment] do
     queue %{
-      PUMA_PID=$(cat "#{puma_pid_path}")
+      PUMA_PID=$(cat "#{puma_pid_path}" 2>/dev/null)
       kill -0 $PUMA_PID > /dev/null 2>&1
       if [ $? != 0 ]; then
         rm "#{puma_sock_dir}/pumactl.sock" > /dev/null 2>&1
