@@ -6,9 +6,9 @@ if File.exist?("#{app_root}/.ruby-gemset")
 else
   version, gemset = version.split("@")
 end
-set_default :current_ruby, version
-set_default :current_gemset, gemset
+set :current_ruby, version
+set :current_gemset, gemset
 
 task :'rvm:use:current' do
-  invoke :"rvm:use[#{current_ruby!}@#{current_gemset!}]"
+  invoke :"rvm:use", "#{fetch(:current_ruby)}@#{fetch(:current_gemset)}"
 end
